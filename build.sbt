@@ -8,7 +8,7 @@ lazy val root = (project in file("."))
   .settings(commonSettings)
   .settings(
     sbtPlugin := true,
-    name := "dialog-sbt-houserules",
+    name := "sbt-dialog-houserules",
     description := "sbt plugin for enforcing sbt house rules in Dialog Team.",
     addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0"),
     addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0"),
