@@ -10,7 +10,7 @@ lazy val root = (project in file("."))
     sbtPlugin := true,
     name := "dialog-sbt-houserules",
     description := "sbt plugin for enforcing sbt house rules in Dialog Team.",
-    addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.5.1"),
+    addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0"),
     addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0"),
     licenses := Seq("Dialog" -> url("https://dlg.im")),
     publishMavenStyle := false,
