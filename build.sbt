@@ -1,5 +1,7 @@
 import ReleaseTransformations._
 
+scalaVersion := "2.10.6"
+
 lazy val commonSettings = Seq(
   organization in ThisBuild := "im.dlg"
 )
