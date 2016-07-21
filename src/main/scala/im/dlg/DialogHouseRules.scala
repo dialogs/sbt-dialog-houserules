@@ -45,7 +45,8 @@ trait ScalaPB extends Dependencies {
   lazy val scalapbSettings: Seq[Def.Setting[_]] =
     scalapbDeps ++
       PB.protobufSettings ++ Seq(
-        PB.runProtoc in PB.protobufConfig := (args => com.github.os72.protocjar.Protoc.runProtoc("-v300" +: args.toArray))
+        PB.runProtoc in PB.protobufConfig := (args => com.github.os72.protocjar.Protoc.runProtoc("-v300" +: args.toArray)),
+        scalaSource in PB.protobufConfig := (sourceManaged in Compile).value.getParentFile / "scalapb"
       )
 }
 
