@@ -2,24 +2,12 @@ package im.dlg
 
 import bintray.BintrayPlugin
 import bintray.BintrayPlugin.autoImport._
-import im.dlg.DialogHouseRules.PublishType.PublishToBintray
 import sbt.Keys._
 import sbt._
 
 import scala.xml.NodeSeq
 
-object DialogHouseRules extends AutoPlugin {
-
-  sealed trait PublishType
-
-  object PublishType {
-
-    object PublishToBintray extends PublishType
-
-    object PublishToSonatype extends PublishType
-
-  }
-
+object DialogHouseRules extends AutoPlugin with Dependencies with Publishing with Compiling {
   override def requires = plugins.JvmPlugin
 
   override def trigger = allRequirements
@@ -30,17 +18,38 @@ object DialogHouseRules extends AutoPlugin {
   lazy val dialogLicense = licenses := Seq("Dialog" -> url("https://dlg.im"))
 
   def dialogSettings(
-    org: String = "im.dlg",
-    publishTo: PublishType = PublishType.PublishToBintray,
-    pomExtra: NodeSeq = Nil
-  ): Seq[Def.Setting[_]] =
+                      org: String = "im.dlg",
+                      publishTo: PublishType = PublishType.PublishToBintray,
+                      pomExtra: NodeSeq = Nil
+                    ): Seq[Def.Setting[_]] =
     publishSettings(pomExtra, org, publishTo) ++ dialogCompileSettings
+}
 
-  private def publishSettings(
-    pomExtraVal: NodeSeq,
-    org: String,
-    publishType: PublishType
-  ): Seq[Def.Setting[_]] =
+trait Dependencies {
+  lazy val protobufDeps: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies += "com.google.protobuf" % "protobuf-java" % "3.0.0-beta-4",
+    dependencyOverrides ~= { overrides =>
+      overrides + "com.google.protobuf" % "protobuf-java" % "3.0.0-beta-4"
+    }
+  )
+}
+
+trait Publishing {
+  sealed trait PublishType
+
+  object PublishType {
+
+    object PublishToBintray extends PublishType
+
+    object PublishToSonatype extends PublishType
+
+  }
+
+  protected def publishSettings(
+                               pomExtraVal: NodeSeq,
+                               org: String,
+                               publishType: PublishType
+                             ): Seq[Def.Setting[_]] =
     (publishType match {
       case PublishType.PublishToBintray => BintrayPlugin.bintrayPublishSettings
       case PublishType.PublishToSonatype =>
@@ -60,8 +69,10 @@ object DialogHouseRules extends AutoPlugin {
         bintrayRepository := "maven",
         pomExtra in Global := pomExtraVal
       )
+}
 
-  private lazy val dialogCompileSettings = Seq(
+trait Compiling {
+  protected lazy val dialogCompileSettings = Seq(
     scalacOptions in Compile ++= Seq(
       "-target:jvm-1.8",
       "-Ybackend:GenBCode",
