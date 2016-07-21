@@ -35,7 +35,7 @@ trait Dependencies {
   )
 
   lazy val scalapbDeps: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34"
+    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34" % PB.protobufConfig
   ) ++ protobufDeps
 }
 
@@ -44,8 +44,9 @@ trait ScalaPB extends Dependencies {
 
   lazy val scalapbSettings: Seq[Def.Setting[_]] =
     scalapbDeps ++
-      PB.protobufSettings :+
-      (PB.runProtoc in PB.protobufConfig := (args => com.github.os72.protocjar.Protoc.runProtoc("-v300" +: args.toArray)))
+      PB.protobufSettings ++ Seq(
+        PB.runProtoc in PB.protobufConfig := (args => com.github.os72.protocjar.Protoc.runProtoc("-v300" +: args.toArray))
+      )
 }
 
 trait Publishing {
