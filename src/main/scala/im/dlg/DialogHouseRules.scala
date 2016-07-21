@@ -2,6 +2,7 @@ package im.dlg
 
 import bintray.BintrayPlugin
 import bintray.BintrayPlugin.autoImport._
+import com.trueaccord.scalapb.{ ScalaPbPlugin => PB }
 import sbt.Keys._
 import sbt._
 
@@ -36,6 +37,15 @@ trait Dependencies {
   lazy val scalapbDeps: Seq[Def.Setting[_]] = Seq(
     libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34" % "provided"
   ) ++ protobufDeps
+}
+
+trait ScalaPB extends Dependencies {
+  import com.trueaccord.scalapb.{ ScalaPbPlugin => PB }
+
+  lazy val scalapbSettings: Seq[Def.Setting[_]] =
+    scalapbDeps ++
+      PB.protobufSettings :+
+      (PB.runProtoc in PB.protobufConfig := (args => com.github.os72.protocjar.Protoc.runProtoc("-v300" +: args.toArray)))
 }
 
 trait Publishing {
