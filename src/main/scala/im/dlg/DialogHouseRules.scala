@@ -32,6 +32,10 @@ trait Dependencies {
       overrides + "com.google.protobuf" % "protobuf-java" % "3.0.0-beta-4"
     }
   )
+
+  lazy val scalapbDeps: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34" % "provided"
+  ) ++ protobufDeps
 }
 
 trait Publishing {
