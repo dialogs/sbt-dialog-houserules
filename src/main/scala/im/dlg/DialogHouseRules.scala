@@ -24,7 +24,12 @@ object DialogHouseRules extends AutoPlugin {
 
   override def trigger = allRequirements
 
-  def dialogDefaultSettings(
+  lazy val defaultDialogSettings = dialogSettings()
+
+  lazy val mitLicense = licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
+  lazy val dialogLicense = licenses := Seq("Dialog" -> url("https://dlg.im"))
+
+  def dialogSettings(
     org: String = "im.dlg",
     publishTo: PublishType = PublishType.PublishToBintray,
     pomExtra: NodeSeq = Nil
@@ -51,9 +56,8 @@ object DialogHouseRules extends AutoPlugin {
     }) ++
       Seq(
         organization := org,
-        bintrayOrganization in bintray := Some("dialog"),
-        bintrayRepository in bintray := "maven",
-        licenses := Seq("Dialog" -> url("https://dlg.im")),
+        bintrayOrganization := Some("dialog"),
+        bintrayRepository := "maven",
         pomExtra in Global := pomExtraVal
       )
 
