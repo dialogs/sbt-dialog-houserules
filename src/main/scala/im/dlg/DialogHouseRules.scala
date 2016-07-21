@@ -18,10 +18,10 @@ object DialogHouseRules extends AutoPlugin with Dependencies with Publishing wit
   lazy val dialogLicense = licenses := Seq("Dialog" -> url("https://dlg.im"))
 
   def dialogSettings(
-                      org: String = "im.dlg",
-                      publishTo: PublishType = PublishType.PublishToBintray,
-                      pomExtra: NodeSeq = Nil
-                    ): Seq[Def.Setting[_]] =
+    org: String = "im.dlg",
+    publishTo: PublishType = PublishType.PublishToBintray,
+    pomExtra: NodeSeq = Nil
+  ): Seq[Def.Setting[_]] =
     publishSettings(pomExtra, org, publishTo) ++ dialogCompileSettings
 }
 
@@ -50,10 +50,10 @@ trait Publishing {
   }
 
   protected def publishSettings(
-                               pomExtraVal: NodeSeq,
-                               org: String,
-                               publishType: PublishType
-                             ): Seq[Def.Setting[_]] =
+    pomExtraVal: NodeSeq,
+    org: String,
+    publishType: PublishType
+  ): Seq[Def.Setting[_]] =
     (publishType match {
       case PublishType.PublishToBintray => BintrayPlugin.bintrayPublishSettings
       case PublishType.PublishToSonatype =>
