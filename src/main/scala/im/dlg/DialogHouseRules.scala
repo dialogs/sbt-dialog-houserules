@@ -8,7 +8,7 @@ import sbt._
 
 import scala.xml.NodeSeq
 
-object DialogHouseRules extends AutoPlugin with Dependencies with Publishing with Compiling {
+object DialogHouseRules extends AutoPlugin with Dependencies with Publishing with Compiling with ScalaPB {
   override def requires = plugins.JvmPlugin
 
   override def trigger = allRequirements
