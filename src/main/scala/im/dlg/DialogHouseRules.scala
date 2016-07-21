@@ -35,7 +35,7 @@ trait Dependencies {
   )
 
   lazy val scalapbDeps: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34" % "provided"
+    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34"
   ) ++ protobufDeps
 }
 
