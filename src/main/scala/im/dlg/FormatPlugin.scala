@@ -21,6 +21,5 @@ object FormatPlugin extends AutoPlugin {
       .setPreference(RewriteArrowSymbols, true)
       .setPreference(AlignParameters, true)
       .setPreference(AlignSingleLineCaseStatements, true)
-      .setPreference(SpacesAroundMultiImports, true)
   }
 }
