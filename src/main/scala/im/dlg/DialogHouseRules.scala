@@ -37,6 +37,14 @@ trait Dependencies {
   lazy val scalapbDeps: Seq[Def.Setting[_]] = Seq(
     libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34" % PB.protobufConfig
   ) ++ protobufDeps
+
+  lazy val grpcDeps: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies += "io.grpc" % "grpc-netty" % "0.15.0"
+  )
+
+  lazy val scalapbGrpcDeps: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % (PB.scalapbVersion in PB.protobufConfig).value
+  ) ++ grpcDeps
 }
 
 trait ScalaPB extends Dependencies {
@@ -48,6 +56,9 @@ trait ScalaPB extends Dependencies {
         PB.runProtoc in PB.protobufConfig := (args => com.github.os72.protocjar.Protoc.runProtoc("-v300" +: args.toArray)),
         scalaSource in PB.protobufConfig := (sourceManaged in Compile).value.getParentFile / "scalapb"
       )
+
+  lazy val scalapbGrpcSettings: Seq[Def.Setting[_]] =
+    scalapbSettings ++ scalapbGrpcDeps
 }
 
 trait Publishing {
