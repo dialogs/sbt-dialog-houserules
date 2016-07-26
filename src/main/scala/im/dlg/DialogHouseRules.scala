@@ -96,6 +96,8 @@ trait Publishing {
         bintrayRepository := "maven",
         pomExtra in Global := pomExtraVal
       )
+
+  def bintraySettings(repo: String = "maven"): Seq[Def.Setting[_]] = Seq(bintrayRepository := repo)
 }
 
 trait Compiling {
