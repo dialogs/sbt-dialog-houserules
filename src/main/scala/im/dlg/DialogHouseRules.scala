@@ -102,6 +102,7 @@ trait Publishing {
 
 trait Compiling {
   protected lazy val dialogCompileSettings = Seq(
+    scalaVersion := "2.11.8",
     scalacOptions in Compile ++= Seq(
       "-target:jvm-1.8",
       "-Ybackend:GenBCode",
