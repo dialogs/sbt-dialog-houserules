@@ -19,7 +19,7 @@ lazy val root = (project in file("."))
     addSbtPlugin("com.trueaccord.scalapb" % "sbt-scalapb" % "0.5.34"),
     libraryDependencies += "com.github.os72" % "protoc-jar" % "3.0.0-b3",
     licenses := Seq("Dialog" -> url("https://dlg.im")),
-    publishMavenStyle := false,
+    publishMavenStyle := true,
     bintrayRepository := "sbt-plugins",
     bintrayOrganization := Some("dialog"),
     releaseProcess := Seq(
