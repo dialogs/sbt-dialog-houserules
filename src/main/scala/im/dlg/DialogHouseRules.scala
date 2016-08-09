@@ -72,6 +72,8 @@ trait Publishing {
 
   }
 
+  val defaultPublishSettings: Seq[Def.Setting[_]] = publishSettings(Nil, "im.dlg", PublishType.PublishToBintray)
+
   protected def publishSettings(
     pomExtraVal: NodeSeq,
     org: String,
@@ -94,7 +96,8 @@ trait Publishing {
         organization := org,
         bintrayOrganization := Some("dialog"),
         bintrayRepository := "maven",
-        pomExtra in Global := pomExtraVal
+        pomExtra in Global := pomExtraVal,
+        publishMavenStyle := true
       )
 
   def bintraySettings(repo: String = "maven"): Seq[Def.Setting[_]] = Seq(bintrayRepository := repo)
