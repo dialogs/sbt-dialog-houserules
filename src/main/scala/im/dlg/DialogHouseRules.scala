@@ -17,6 +17,7 @@ object DialogHouseRules extends AutoPlugin with Dependencies with Publishing wit
 
   lazy val mitLicense = licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
   lazy val dialogLicense = licenses := Seq("Dialog" -> url("https://dlg.im"))
+  lazy val bintrayNoLicense = bintrayOmitLicense := true
 
   def dialogSettings(
     org: String = "im.dlg",
