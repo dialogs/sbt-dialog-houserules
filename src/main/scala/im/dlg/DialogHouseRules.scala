@@ -2,9 +2,9 @@ package im.dlg
 
 import bintray.BintrayPlugin
 import bintray.BintrayPlugin.autoImport._
-import com.trueaccord.scalapb.{ ScalaPbPlugin => PB }
 import sbt.Keys._
 import sbt._
+import sbtprotoc.ProtocPlugin.autoImport.PB
 
 import scala.xml.NodeSeq
 
@@ -28,38 +28,21 @@ object DialogHouseRules extends AutoPlugin with Dependencies with Publishing wit
 }
 
 trait Dependencies {
-  lazy val protobufDeps: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies += "com.google.protobuf" % "protobuf-java" % "3.0.0-beta-4",
-    dependencyOverrides ~= { overrides =>
-      overrides + "com.google.protobuf" % "protobuf-java" % "3.0.0-beta-4"
-    }
-  )
-
   lazy val scalapbDeps: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.34" % PB.protobufConfig
-  ) ++ protobufDeps
-
-  lazy val grpcDeps: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies += "io.grpc" % "grpc-netty" % "0.15.0"
+    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime" % "0.5.42" % "protobuf"
   )
-
-  lazy val scalapbGrpcDeps: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies += "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % (PB.scalapbVersion in PB.protobufConfig).value
-  ) ++ grpcDeps
 }
 
 trait ScalaPB extends Dependencies {
-  import com.trueaccord.scalapb.{ ScalaPbPlugin => PB }
-
   lazy val scalapbSettings: Seq[Def.Setting[_]] =
-    scalapbDeps ++
-      PB.protobufSettings ++ Seq(
-        PB.runProtoc in PB.protobufConfig := (args => com.github.os72.protocjar.Protoc.runProtoc("-v300" +: args.toArray)),
-        scalaSource in PB.protobufConfig := (sourceManaged in Compile).value.getParentFile / "scalapb"
+    scalapbDeps ++ Seq(
+      PB.targets in Compile := Seq(
+        scalapb.gen(singleLineToString = true) -> (sourceManaged in Compile).value
       )
+    )
 
   lazy val scalapbGrpcSettings: Seq[Def.Setting[_]] =
-    scalapbSettings ++ scalapbGrpcDeps
+    scalapbSettings
 }
 
 trait Publishing {
