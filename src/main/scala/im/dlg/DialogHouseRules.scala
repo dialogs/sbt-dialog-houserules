@@ -34,9 +34,9 @@ trait Dependencies {
   )
 
   lazy val scalapbGrpcDeps: Seq[ModuleID] = Seq(
-      "io.grpc" % "grpc-netty" % "1.0.1",
-      "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion
-    )
+    "io.grpc" % "grpc-netty" % "1.0.1",
+    "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion
+  )
 }
 
 trait ScalaPB extends Dependencies {
