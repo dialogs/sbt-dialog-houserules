@@ -29,20 +29,31 @@ object DialogHouseRules extends AutoPlugin with Dependencies with Publishing wit
 
 trait Dependencies {
   val scalapbVersion = com.trueaccord.scalapb.compiler.Version.scalapbVersion
-  lazy val scalapbDeps: Seq[Def.Setting[_]] = libraryDependencies +=
+  lazy val scalapbDeps: Seq[ModuleID] = Seq(
     "com.trueaccord.scalapb" %% "scalapb-runtime" % scalapbVersion % "protobuf"
+  )
+
+  lazy val scalapbGrpcDeps: Seq[Seq[ModuleID]] = Seq(
+    Seq(
+      "io.grpc" % "grpc-netty" % "1.0.1",
+      "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion
+    )
+  )
 }
 
 trait ScalaPB extends Dependencies {
   lazy val scalapbSettings: Seq[Def.Setting[_]] =
-    scalapbDeps ++ Seq(
+    Seq(
+      libraryDependencies ++= scalapbDeps,
       PB.targets in Compile := Seq(
         scalapb.gen(singleLineToString = true) -> (sourceManaged in Compile).value
       )
     )
 
   lazy val scalapbGrpcSettings: Seq[Def.Setting[_]] =
-    scalapbSettings
+    scalapbSettings ++ Seq(
+      libraryDependencies ++= scalapbGrpcDeps
+    )
 }
 
 trait Publishing {
