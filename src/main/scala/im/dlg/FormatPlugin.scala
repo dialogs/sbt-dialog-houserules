@@ -12,6 +12,7 @@ object FormatPlugin extends AutoPlugin {
   override lazy val projectSettings: Seq[Def.Setting[_]] = baseSettings
 
   lazy val baseSettings = Seq(
-    scalafmtConfig := Some(baseDirectory.in(ThisBuild).value / ".scalafmt.conf")
+    scalafmtConfig := Some(baseDirectory.in(ThisBuild).value / ".scalafmt.conf"),
+    formatSbtFiles := false
   ) ++ reformatOnCompileSettings
 }
