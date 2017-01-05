@@ -12,7 +12,7 @@ lazy val root = (project in file("."))
     sbtPlugin := true,
     name := "sbt-dialog-houserules",
     description := "sbt plugin for enforcing sbt house rules in Dialog Team.",
-    addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0"),
+    addSbtPlugin("com.geirsson" % "sbt-scalafmt" % "0.4.10"),
     addSbtPlugin("me.lessis" % "bintray-sbt" % "0.3.0"),
     addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3"),
     addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0"),
