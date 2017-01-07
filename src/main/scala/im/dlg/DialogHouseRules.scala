@@ -34,7 +34,7 @@ trait Dependencies {
   )
 
   lazy val scalapbGrpcDeps: Seq[ModuleID] = Seq(
-    "io.grpc" % "grpc-netty" % "1.0.1",
+    "io.grpc" % "grpc-netty" % "1.6.1",
     "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion
   )
 }
@@ -98,19 +98,17 @@ trait Publishing {
 
 trait Compiling {
   protected lazy val dialogCompileSettings = Seq(
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.12.4",
     scalacOptions in Compile ++= Seq(
       "-target:jvm-1.8",
-      "-Ybackend:GenBCode",
       "-Ydelambdafy:method",
-      "-Yopt:l:classpath",
       "-encoding", "UTF-8",
       "-deprecation",
       "-unchecked",
       "-feature",
       "-language:higherKinds",
-      "-Xfatal-warnings",
-      "-Xlint",
+      //"-Xfatal-warnings",
+      //"-Xlint",
       "-Xfuture",
       "-Ywarn-dead-code",
       "-Ywarn-infer-any",
