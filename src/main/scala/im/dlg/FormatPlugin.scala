@@ -2,7 +2,7 @@ package im.dlg
 
 import sbt._
 import Keys._
-import org.scalafmt.sbt.ScalafmtPlugin
+import com.lucidchart.sbt.scalafmt.{ ScalafmtCorePlugin, ScalafmtPlugin }
 import sbt.{ IntegrationTest => It }
 
 object FormatPlugin extends AutoPlugin {
@@ -66,7 +66,8 @@ object FormatPlugin extends AutoPlugin {
       )(handleUpdate)(files)
       val filesFlag = toFormat.map(_.getAbsolutePath).mkString(",")
       val args = Seq("", "org.scalafmt.cli.Cli", "-i", "-f", filesFlag)
-      (runMain in ScalafmtPlugin.scalafmtStub).toTask(args.mkString(" "))
+      (runMain in ScalafmtCorePlugin.autoImport.scalafmt)
+        .toTask(args.mkString(" "))
     }.value
   )
 

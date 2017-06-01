@@ -8,14 +8,21 @@ import sbtprotoc.ProtocPlugin.autoImport.PB
 
 import scala.xml.NodeSeq
 
-object DialogHouseRules extends AutoPlugin with Dependencies with Publishing with Compiling with ScalaPB {
+object DialogHouseRules
+    extends AutoPlugin
+    with Dependencies
+    with Publishing
+    with Compiling
+    with ScalaPB {
   override def requires = plugins.JvmPlugin
 
   override def trigger = allRequirements
 
   lazy val defaultDialogSettings = dialogSettings()
 
-  lazy val mitLicense = licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
+  lazy val mitLicense = licenses := Seq(
+    "MIT" -> url("https://opensource.org/licenses/MIT")
+  )
   lazy val dialogLicense = licenses := Seq("Dialog" -> url("https://dlg.im"))
   lazy val bintrayNoLicense = bintrayOmitLicense := true
 
@@ -34,7 +41,7 @@ trait Dependencies {
   )
 
   lazy val scalapbGrpcDeps: Seq[ModuleID] = Seq(
-    "io.grpc" % "grpc-netty" % "1.0.1",
+    "io.grpc" % "grpc-netty" % "1.5.0",
     "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion
   )
 }
@@ -44,7 +51,8 @@ trait ScalaPB extends Dependencies {
     Seq(
       libraryDependencies ++= scalapbDeps,
       PB.targets in Compile := Seq(
-        scalapb.gen(singleLineToString = true) -> (sourceManaged in Compile).value
+        scalapb
+          .gen(singleLineToString = true) -> (sourceManaged in Compile).value
       )
     )
 
@@ -65,7 +73,8 @@ trait Publishing {
 
   }
 
-  val defaultPublishSettings: Seq[Def.Setting[_]] = publishSettings(Nil, "im.dlg", PublishType.PublishToBintray)
+  val defaultPublishSettings: Seq[Def.Setting[_]] =
+    publishSettings(Nil, "im.dlg", PublishType.PublishToBintray)
 
   protected def publishSettings(
     pomExtraVal: NodeSeq,
@@ -93,18 +102,20 @@ trait Publishing {
         publishMavenStyle := true
       )
 
-  def bintraySettings(repo: String = "maven"): Seq[Def.Setting[_]] = Seq(bintrayRepository := repo)
+  def bintraySettings(repo: String = "maven"): Seq[Def.Setting[_]] =
+    Seq(bintrayRepository := repo)
 }
 
 trait Compiling {
   protected lazy val dialogCompileSettings = Seq(
-    scalaVersion := "2.11.8",
+    scalaVersion := "2.12.2",
+    //    scalaVersion := "2.11.11",
     scalacOptions in Compile ++= Seq(
-      "-target:jvm-1.8",
-      "-Ybackend:GenBCode",
-      "-Ydelambdafy:method",
-      "-Yopt:l:classpath",
-      "-encoding", "UTF-8",
+      //      "-Ybackend:GenBCode",
+      //"-Ydelambdafy:method", // default in 2.12
+      //      "-Yopt:l:classpath",
+      "-encoding",
+      "UTF-8",
       "-deprecation",
       "-unchecked",
       "-feature",
@@ -112,11 +123,18 @@ trait Compiling {
       "-Xfatal-warnings",
       "-Xlint",
       "-Xfuture",
-      "-Ywarn-dead-code",
+      //"-Ywarn-dead-code",
       "-Ywarn-infer-any",
       "-Ywarn-numeric-widen"
     ),
     javaOptions ++= Seq("-Dfile.encoding=UTF-8"),
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation")
+    javacOptions ++= Seq(
+      "-source",
+      "1.8",
+      "-target",
+      "1.8",
+      "-Xlint:unchecked",
+      "-Xlint:deprecation"
+    )
   )
 }
