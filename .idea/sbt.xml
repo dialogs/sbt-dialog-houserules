@@ -11,8 +11,11 @@
             <option value="$PROJECT_DIR$/project" />
           </set>
         </option>
-        <option name="sbtVersion" value="0.13.13" />
+        <option name="resolveSbtClassifiers" value="true" />
+        <option name="sbtVersion" value="0.13.12" />
       </SbtProjectSettings>
     </option>
+    <option name="maximumHeapSize" value="4096" />
+    <option name="vmParameters" value="" />
   </component>
 </project>
