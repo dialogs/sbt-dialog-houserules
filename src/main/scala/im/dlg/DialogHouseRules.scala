@@ -2,13 +2,14 @@ package im.dlg
 
 import bintray.BintrayPlugin
 import bintray.BintrayPlugin.autoImport._
+import com.typesafe.sbt.SbtScalariform.ScalariformKeys
 import sbt.Keys._
 import sbt._
 import sbtprotoc.ProtocPlugin.autoImport.PB
 
 import scala.xml.NodeSeq
 
-object DialogHouseRules extends AutoPlugin with Dependencies with Publishing with Compiling with ScalaPB {
+object DialogHouseRules extends AutoPlugin with Dependencies with Publishing with Compiling with ScalaPB with Formatting {
   override def requires = plugins.JvmPlugin
 
   override def trigger = allRequirements
@@ -24,7 +25,7 @@ object DialogHouseRules extends AutoPlugin with Dependencies with Publishing wit
     publishTo: PublishType = PublishType.PublishToBintray,
     pomExtra: NodeSeq = Nil
   ): Seq[Def.Setting[_]] =
-    publishSettings(pomExtra, org, publishTo) ++ dialogCompileSettings
+    publishSettings(pomExtra, org, publishTo) ++ dialogCompileSettings ++ formatSettings
 }
 
 trait Dependencies {
@@ -52,6 +53,25 @@ trait ScalaPB extends Dependencies {
     scalapbSettings ++ Seq(
       libraryDependencies ++= scalapbGrpcDeps
     )
+}
+
+trait Formatting {
+  import scalariform.formatter.preferences._
+
+  lazy val formatSettings: Seq[Def.Setting[_]] = Seq(
+    ScalariformKeys.preferences := setPreferences(ScalariformKeys.preferences.value),
+    ScalariformKeys.preferences in Compile := setPreferences(ScalariformKeys.preferences.value),
+    ScalariformKeys.preferences in Test := setPreferences(ScalariformKeys.preferences.value)
+  )
+
+  def setPreferences(preferences: IFormattingPreferences) = preferences
+   .setPreference(RewriteArrowSymbols, true)
+   .setPreference(AlignParameters, true)
+   .setPreference(AlignSingleLineCaseStatements, true)
+   .setPreference(DoubleIndentConstructorArguments, false)
+   .setPreference(DoubleIndentMethodDeclaration, false)
+   .setPreference(DanglingCloseParenthesis, Force)
+   .setPreference(NewlineAtEndOfFile, true)
 }
 
 trait Publishing {
