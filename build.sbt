@@ -16,6 +16,7 @@ lazy val root = (project in file("."))
     addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.3"),
     addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0"),
     addSbtPlugin("com.thesamet" % "sbt-protoc" % "0.99.12"),
+    addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.2"),
     libraryDependencies += "com.trueaccord.scalapb" %% "compilerplugin" % "0.6.6",
     licenses := Seq("Dialog" -> url("https://dlg.im")),
     publishMavenStyle := false,
