@@ -67,7 +67,7 @@ trait Formatting {
   def setPreferences(preferences: IFormattingPreferences) = preferences
    .setPreference(RewriteArrowSymbols, true)
    .setPreference(AlignParameters, true)
-   .setPreference(AlignSingleLineCaseStatements, true)
+   .setPreference(AlignSingleLineCaseStatements, false)
    .setPreference(DoubleIndentConstructorArguments, false)
    .setPreference(DoubleIndentMethodDeclaration, false)
    .setPreference(DanglingCloseParenthesis, Force)
