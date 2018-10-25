@@ -72,6 +72,7 @@ trait Formatting {
    .setPreference(DoubleIndentMethodDeclaration, false)
    .setPreference(DanglingCloseParenthesis, Force)
    .setPreference(NewlineAtEndOfFile, true)
+   .setPreference(AllowParamGroupsOnNewlines, true)
 }
 
 trait Publishing {
