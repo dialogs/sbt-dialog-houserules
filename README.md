@@ -1,3 +1,7 @@
-# actor-sbt-houserules
+# Dialog sbt houserules
 
-actor-sbt-houserules is a house rules plugin for actor sbt modules.
+A set of utilities for Dialog scala projects.
+
+## License
+
+[Apache-2.0](LICENSE)
