@@ -1,15 +1,13 @@
 package im.dlg
 
+import sbt._
+import Keys._
 import bintray.BintrayPlugin
 import bintray.BintrayPlugin.autoImport._
-import com.typesafe.sbt.SbtScalariform.ScalariformKeys
-import sbt.Keys._
-import sbt._
-import sbtprotoc.ProtocPlugin.autoImport.PB
 
 import scala.xml.NodeSeq
 
-object DialogHouseRules extends AutoPlugin with Dependencies with Publishing with Compiling with ScalaPB with Formatting {
+object DialogHouseRules extends AutoPlugin with Publishing {
   override def requires = plugins.JvmPlugin
 
   override def trigger = allRequirements
@@ -25,55 +23,9 @@ object DialogHouseRules extends AutoPlugin with Dependencies with Publishing wit
     publishTo: PublishType = PublishType.PublishToBintray,
     pomExtra: NodeSeq = Nil
   ): Seq[Def.Setting[_]] =
-    publishSettings(pomExtra, org, publishTo) ++ dialogCompileSettings ++ formatSettings
+    publishSettings(pomExtra, org, publishTo)
 }
 
-trait Dependencies {
-  val scalapbVersion = com.trueaccord.scalapb.compiler.Version.scalapbVersion
-  lazy val scalapbDeps: Seq[ModuleID] = Seq(
-    "com.trueaccord.scalapb" %% "scalapb-runtime" % scalapbVersion % "protobuf"
-  )
-
-  lazy val scalapbGrpcDeps: Seq[ModuleID] = Seq(
-    "io.grpc" % "grpc-netty" % "1.6.1",
-    "com.trueaccord.scalapb" %% "scalapb-runtime-grpc" % scalapbVersion
-  )
-}
-
-trait ScalaPB extends Dependencies {
-  lazy val scalapbSettings: Seq[Def.Setting[_]] =
-    Seq(
-      libraryDependencies ++= scalapbDeps,
-      PB.targets in Compile := Seq(
-        scalapb.gen(singleLineToString = true) -> (sourceManaged in Compile).value
-      )
-    )
-
-  lazy val scalapbGrpcSettings: Seq[Def.Setting[_]] =
-    scalapbSettings ++ Seq(
-      libraryDependencies ++= scalapbGrpcDeps
-    )
-}
-
-trait Formatting {
-  import scalariform.formatter.preferences._
-
-  lazy val formatSettings: Seq[Def.Setting[_]] = Seq(
-    ScalariformKeys.preferences := setPreferences(ScalariformKeys.preferences.value),
-    ScalariformKeys.preferences in Compile := setPreferences(ScalariformKeys.preferences.value),
-    ScalariformKeys.preferences in Test := setPreferences(ScalariformKeys.preferences.value)
-  )
-
-  def setPreferences(preferences: IFormattingPreferences) = preferences
-   .setPreference(RewriteArrowSymbols, true)
-   .setPreference(AlignParameters, true)
-   .setPreference(AlignSingleLineCaseStatements, false)
-   .setPreference(DoubleIndentConstructorArguments, false)
-   .setPreference(DoubleIndentMethodDeclaration, false)
-   .setPreference(DanglingCloseParenthesis, Force)
-   .setPreference(NewlineAtEndOfFile, true)
-   .setPreference(AllowParamGroupsOnNewlines, true)
-}
 
 trait Publishing {
   sealed trait PublishType
@@ -117,27 +69,3 @@ trait Publishing {
   def bintraySettings(repo: String = "maven"): Seq[Def.Setting[_]] = Seq(bintrayRepository := repo)
 }
 
-trait Compiling {
-  protected lazy val dialogCompileSettings = Seq(
-    scalaVersion := "2.11.8",
-    scalacOptions in Compile ++= Seq(
-      "-target:jvm-1.8",
-      "-Ybackend:GenBCode",
-      "-Ydelambdafy:method",
-      "-Yopt:l:classpath",
-      "-encoding", "UTF-8",
-      "-deprecation",
-      "-unchecked",
-      "-feature",
-      "-language:higherKinds",
-      "-Xfatal-warnings",
-      "-Xlint",
-      "-Xfuture",
-      "-Ywarn-dead-code",
-      "-Ywarn-infer-any",
-      "-Ywarn-numeric-widen"
-    ),
-    javaOptions ++= Seq("-Dfile.encoding=UTF-8"),
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint:unchecked", "-Xlint:deprecation")
-  )
-}
